@@ -2,6 +2,9 @@
 
 App to create totp
 
+# Requirements
+- Flutter 3.24.3 or later
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
