@@ -14,9 +14,8 @@ class _OtppageState extends State<Otppage> {
   /// Input
   TextEditingController teOtp = TextEditingController();
   bool isGoogle = false;
-  int msSinceEpoch = DateTime
-      .now()
-      .millisecondsSinceEpoch;
+  bool isEpoch = true;
+  int msSinceEpoch = DateTime.now().millisecondsSinceEpoch;
 
   /// Hasil
   TextEditingController teHasil = TextEditingController();
@@ -35,10 +34,7 @@ class _OtppageState extends State<Otppage> {
               // title
               Text(
                 "TOTP Generator",
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .headlineLarge,
+                style: Theme.of(context).textTheme.headlineLarge,
               ),
               const SizedBox.square(dimension: 20),
 
@@ -50,10 +46,7 @@ class _OtppageState extends State<Otppage> {
                   // label
                   Text(
                     "Setting OTP",
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .labelSmall,
+                    style: Theme.of(context).textTheme.labelSmall,
                   ),
                   const SizedBox.square(dimension: 10),
 
@@ -63,7 +56,7 @@ class _OtppageState extends State<Otppage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // dropdown button
+                      // dropdown button for selecting input type
                       DropdownButton<String>(
                         value: 'Milliseconds', // Default value
                         items: const [
@@ -81,9 +74,15 @@ class _OtppageState extends State<Otppage> {
                           if (value == 'Date') {
                             // Logic for date input
                             debugPrint('Date selected');
+                            setState(() {
+                              isEpoch = false;
+                            });
                           } else {
                             // Logic for milliseconds input
                             debugPrint('Milliseconds selected');
+                            setState(() {
+                              isEpoch = true;
+                            });
                           }
                         },
                       ),
@@ -91,21 +90,34 @@ class _OtppageState extends State<Otppage> {
 
                       // msSinceEpoch
                       Flexible(
-                        child: TextField(
-                          decoration: const InputDecoration(
-                            labelText: "Milliseconds Since Epoch",
-                            hintText: "1633036800000",
-                            border: OutlineInputBorder(),
+                        child: Visibility(
+                          visible: isEpoch,
+                          maintainState: true,
+                          // replace with date picker
+                          replacement: const TextField(
+                            decoration: InputDecoration(
+                              labelText: "Date Picker (not implemented)",
+                              hintText: "2021-10-01 00:00:00",
+                              border: OutlineInputBorder(),
+                            ),
+                            keyboardType: TextInputType.datetime,
+                            readOnly: true,
                           ),
-                          keyboardType: TextInputType.number,
-                          onChanged: (value) {
-                            setState(() {
-                              msSinceEpoch = int.tryParse(value) ??
-                                  DateTime
-                                      .now()
-                                      .millisecondsSinceEpoch;
-                            });
-                          },
+
+                          child: TextField(
+                            decoration: const InputDecoration(
+                              labelText: "Milliseconds Since Epoch",
+                              hintText: "1633036800000",
+                              border: OutlineInputBorder(),
+                            ),
+                            keyboardType: TextInputType.number,
+                            onChanged: (value) {
+                              setState(() {
+                                msSinceEpoch = int.tryParse(value) ??
+                                    DateTime.now().millisecondsSinceEpoch;
+                              });
+                            },
+                          ),
                         ),
                       ),
                       const SizedBox.square(dimension: 20),
@@ -133,17 +145,13 @@ class _OtppageState extends State<Otppage> {
                   // label
                   Text(
                     "Input OTP",
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .labelSmall,
+                    style: Theme.of(context).textTheme.labelSmall,
                   ),
                   const SizedBox.square(dimension: 10),
 
                   // input
                   Row(
                     children: [
-
                       /// OTP input
                       Expanded(
                         child: TextField(
@@ -174,17 +182,13 @@ class _OtppageState extends State<Otppage> {
                   // label
                   Text(
                     "Result",
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .labelSmall,
+                    style: Theme.of(context).textTheme.labelSmall,
                   ),
                   const SizedBox.square(dimension: 10),
 
                   // result
                   Row(
                     children: [
-
                       /// OTP result
                       Expanded(
                         child: TextField(
