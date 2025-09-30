@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:otp/otp.dart';
 
 class GenerateOtp {
